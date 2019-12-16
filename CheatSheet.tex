@@ -1,0 +1,614 @@
+% Created 2019-12-16 Mon 00:52
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage{unicode}
+\author{Daniel Rubinstein}
+\date{\today}
+\title{Tech Interview Study Sheet\\\medskip
+\large A study guide for technical intervies.}
+\hypersetup{
+ pdfauthor={Daniel Rubinstein},
+ pdftitle={Tech Interview Study Sheet},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.3 (Org mode 9.1.9)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+
+\section*{Data Structures}
+\label{sec:orgf7796ff}
+\subsection*{Arrays}
+\label{sec:orge60915a}
+Arrays store a collection of items in contiguous memory locations.
+Normal arrays have a set length (as one must know how many consecutive memory spots must be allocated for the given array) although there are other methods by which one can increase the size of an array (See Doubling Arrays).
+Some facts to know about the time complexity of array actions:
+\begin{center}
+\begin{tabular}{llll}
+Action & Worst Case & Best Case & Average Case\\
+\hline
+Element Access & O(1) & O(1) & O(1)\\
+Insert / Change / Delete & O(1) & O(1) & O(1)\\
+\end{tabular}
+\end{center}
+
+Note:
+\begin{itemize}
+\item Insert is assumed to mean setting the initial value of a variable
+\item Delete is assumed to mean changing the value of an element to some temporary invalid value.
+\end{itemize}
+Other interpretations of inserting and deleting will have a varied time complexity.
+
+\subsection*{Doubling Arrays}
+\label{sec:org120b56d}
+This is simply an array that has a dynamic size. Once the array is filled, a new array of double the size is created and all the contents of the original array are copied over.
+
+\subsection*{Linked Lists}
+\label{sec:orgbb772e3}
+This recursively defined data structure stores a collection of objects (not necessarily in consecutive memory spots) by defining a node in the list as a structure holding some form of data as well as a pointer to the next node in the list.
+
+Some useful information about the time complexity of various actions:
+\begin{center}
+\begin{tabular}{llll}
+Action & Worst Case & Best Case & Average Case\\
+\hline
+Element Access & O(N) & - & O(N/2)\\
+Insert / Change / Delete & O(N) & - & O(N/2)\\
+\end{tabular}
+\end{center}
+
+\subsection*{Doubly Linked Lists}
+\label{sec:org3d42140}
+These are simply linked lists that have pointers both to the next and previous node.
+
+\subsection*{Stacks}
+\label{sec:org25d8bcb}
+This data structure stores the pointer to a "stack of information" following the First in Last Out principle.
+One can either pop or push from the stack.
+\begin{itemize}
+\item Pop allows one to take the top item off of the stack.
+\item Push allows one to put a new item onto the stack.
+\end{itemize}
+
+Implementations:
+\begin{itemize}
+\item Using arrays
+\begin{itemize}
+\item Must track the top of the stack manually.
+\item Can be fixed capacity.
+\end{itemize}
+\item Using linked lists
+\begin{itemize}
+\item Add / remove from the stack by insertin / deleting nodes.
+\item No fixed capacity.
+\end{itemize}
+\end{itemize}
+\subsection*{Queues}
+\label{sec:org72db4d0}
+This data structure works similarily to a line up of people at the grocery store.
+Data is inserted and taken out using the First in First Out principle.
+One can either enqueue or dequeue from the queue.
+\begin{itemize}
+\item Enqueue adds a new data item to the queue.
+\item Dequeue takes the "first in line" data item out of the queue.
+\end{itemize}
+
+Implementations:
+\begin{itemize}
+\item Array
+\item Linked list
+\end{itemize}
+
+\subsection*{Sets / Bags}
+\label{sec:org2b4bd11}
+Sets are collections of unique items. Order is irellevant and so is multiplicity as only one copy of each item is stored.
+A bag is similar to a set only multiplicity matters as multiple copies of each item can be stored.
+
+\subsection*{Priority Queues}
+\label{sec:org4445f8a}
+Similar to queues only things are taken out based on their priority level (by maximum or minimum value) instead of the order they came in.
+There are various implementations of such a data structure:
+
+\subsubsection*{Unordered Arrays}
+\label{sec:org90fde00}
+
+The relevant time complexities are as follows:
+\begin{center}
+\begin{tabular}{ll}
+Action & Time Complexity\\
+\hline
+Find Max & O(N)\\
+Remove Max & O(N)\\
+Insert & O(1)\\
+\end{tabular}
+\end{center}
+
+\subsubsection*{Ordered Arrays}
+\label{sec:orgca496ca}
+
+The relevant time complexities are as follows:
+\begin{center}
+\begin{tabular}{ll}
+Action & Time Complexity\\
+\hline
+Find Max & O(1)\\
+Remove Max & O(1)\\
+Insert & O(N)\\
+\end{tabular}
+\end{center}
+
+\subsubsection*{Binary Heaps}
+\label{sec:org0104ed6}
+What is a heap?
+A heap is a structure such similar to a binary tree such that both children have values less than their parent.
+Properties (given that an array (id) stores the nodes in the heap):
+\begin{itemize}
+\item Children of id[x] are found at indexes 2*x and 2*x + 1
+\item The height of the heap is LogN
+\end{itemize}
+
+There are two actions that are used to construct and manipulate heaps:
+\begin{itemize}
+\item Sink takes a node and moves it lower into the tree until heap condition is satisfied.
+\item Swim takes a node and moves it higher in the tree until heap condition is satisfied.
+\end{itemize}
+
+How to do the three main PQ actions:
+\begin{itemize}
+\item Find max: Simply look at the root.
+\item Remove max: Swap the root with the last leaf node, remove it, and sink the new root.
+\item Insert: Add a new leaf node, swim it up.
+\end{itemize}
+
+The relevant time complexities are as follows:
+\begin{center}
+\begin{tabular}{ll}
+Action & Time Complexity\\
+\hline
+Find Max & O(1)\\
+Remove Max & O(LogN)\\
+Insert & O(LogN)\\
+\end{tabular}
+\end{center}
+
+\subsubsection*{D-Ary Heaps}
+\label{sec:org2869a83}
+Work just like binary heaps, only these have d children.
+Binary heaps have time complexities of O(LogN), d-ary heaps have time complexities of O(cLog(base c)N)where c is the number of children that can exist in the d-ary heap.
+
+\subsection*{Trees}
+\label{sec:orga08ca38}
+\subsubsection*{Binary Tree}
+\label{sec:orgb57e5eb}
+A tree with 2 children
+\subsubsection*{Complete Binary Tree}
+\label{sec:org098d583}
+A tree such that all levels are completely filled.
+\subsubsection*{Binary Search Tree}
+\label{sec:org017f619}
+Useful for representing symbol tables.
+Properties:
+\begin{itemize}
+\item Left child is smaller than parent
+\item Right child is greater than parent
+\end{itemize}
+
+For a symbol table represented as BST the relevant time complexities are:
+\begin{center}
+\begin{tabular}{ll}
+Action & Time Complexity\\
+\hline
+Search Garuntee & O(N)\\
+Search Average & O(logN)\\
+Insert Garuntee & O(N)\\
+Insert Average & O(logN)\\
+\end{tabular}
+\end{center}
+
+
+How do we tackle deletion?
+\begin{itemize}
+\item Tombstone method - Make some nodes "removed" or tombstone nodes
+\item Hibbard deletion - Based on the case, find a way to delete the node and rebuild the rest of the tree.
+\end{itemize}
+
+Problem is that tree shape can vary
+How do we fix this problem?
+\begin{itemize}
+\item Balanced Search Trees
+\end{itemize}
+
+\subsubsection*{Balanced Search Trees}
+\label{sec:orgb87c72e}
+We can improve the balance of a BST by using various balancing techniques.
+One such technique is to implement a 2-3 tree.
+This tree has nodes that are either:
+\begin{itemize}
+\item 2 Nodes: 1 Key, 2 Children
+\item 3 Nodes: 2 Keys, 3 Children
+\end{itemize}
+
+Actions for such a tree include:
+\begin{itemize}
+\item Search: Done like a BST based on the values of the nodes.
+\item Insert into 2 Node: Transform the node into a 3 Node
+\item Insert into 3 Node: Transform the node into a temporary 4 Node, then move the middle key up and restructure the tree.
+\end{itemize}
+
+How can we represent such a tree?
+\begin{itemize}
+\item As a BST? No
+\item As a BST with glue nodes? Yes but this is tedious.
+\item As a Red Black Tree? Perfect!
+\end{itemize}
+
+The relevant time complexities for this structure are:
+\begin{center}
+\begin{tabular}{ll}
+Action & Time Complexity\\
+\hline
+Search Garuntee & O(CLog(base C)N)\\
+Search Average & O(CLog(base C)N)\\
+Insert Garuntee & O(CLog(base C)N)\\
+Insert Average & O(CLog(base C)N)\\
+\end{tabular}
+\end{center}
+Where C is dependant on the types of nodes in the tree.
+
+\subsubsection*{Red Black Trees}
+\label{sec:org66b0bed}
+This is a BST that now has a colour value attached to it's various node connections.
+There are a few properties that always hold:
+\begin{itemize}
+\item No nodes can have 2 red connections going into / out of them.
+\item Every path from the root to a leaf has an equal number of black connections.
+\item Every red connection is left leaning
+\end{itemize}
+Red connections signify 3-nodes from Balanced Search Trees above.
+
+There are three actions that are useful to know for constructing such a tree:
+\begin{itemize}
+\item Rotate left
+\item Rotate right
+\item Change colours
+\end{itemize}
+
+The relevant time complexities for this structure are:
+\begin{center}
+\begin{tabular}{ll}
+Action & Time Complexity\\
+\hline
+Search Garuntee & O(LogN)\\
+Search Average & O(LogN)\\
+Insert Garuntee & O(LogN)\\
+Insert Average & O(LogN)\\
+\end{tabular}
+\end{center}
+
+\subsubsection*{B-Trees}
+\label{sec:orgaf9e60a}
+TLDR: Like 2-3 trees, only they can store a variable amount of keys in each node. 
+I'll add more on this later.
+
+\subsubsection*{Hash Tables}
+\label{sec:orgd31c523}
+Used for symbol table implementation. Determines where to store info based on a hash function.
+Hash function determines the memory location where the data is to be stored.
+
+
+We run into an issue: What happens if we continually hash to the same place?
+\begin{itemize}
+\item Solution 1: Seperate Chaining
+\begin{itemize}
+\item Store linked lists of data at each hash location. Then you only have to search through the linked list to find the data.
+\begin{itemize}
+\item On average given M locations to hash to, and N values, it takes O(M/N) to find a data segment.
+\end{itemize}
+\end{itemize}
+\item Solution 2: Linear Probing
+\begin{itemize}
+\item If the hash location is currently occupied, find the next available location to hash to.
+\begin{itemize}
+\item Another problem: This gets worse the more we hash to the same location (i.e. problem called clustering)
+\end{itemize}
+\end{itemize}
+\end{itemize}
+
+Other improvements:
+\begin{itemize}
+\item Double probing: Hash to two different locations, place data into the open one
+\item Double hashing - Instead of finding the next available memory location like in linear probing, skip a variable amount of memory blocks and try there.
+\item Cuckoo hashing - Hash to two locations, reinsert some of the data there if both are filled. (I'll add more on this later).
+\end{itemize}
+\subsubsection*{Graph}
+\label{sec:org9874c28}
+A series of vertices connected (possibly) by edges.
+Graph Terminolog:
+\begin{itemize}
+\item Path - A set of connections between two vertices.
+\item Cycle - A path that loops.
+\end{itemize}
+
+Possible representations:
+\begin{itemize}
+\item Adjacency matrix - 2D matrix with booleans to explain if two vertices are connected.
+\item Adjacency lists - Series of linked lists stored in an array to describe which vertices are connected.
+\end{itemize}
+
+DFS:
+\begin{itemize}
+\item Depth first search.
+\item See implementation examples to be uploaded soon.
+\item Can be used to solve connectivity problem.
+\item Can be used to find cycles within DAGs.
+\end{itemize}
+BFS:
+\begin{itemize}
+\item Breadth first search
+\item See implementation examples to be uploaded soon.
+\end{itemize}
+
+Undirected vs Directed:
+\begin{itemize}
+\item Undirected has no direction to the edges in the graph.
+\item Directed graphs have edges with a direction.
+\end{itemize}
+
+Strongly Connected Components:
+\begin{itemize}
+\item V and W are strongly connected if there is a path from V to W and a path from W to V.
+\item Strong component is maximal subset of strongly connected vertices.
+\end{itemize}
+
+\subsubsection*{Edge Weighted Graphs}
+\label{sec:orgf13f43a}
+These are trees with weights given to each edge.
+It brings up the interesting idea of finding shortest paths and minimum spanning tree.
+
+\begin{itemize}
+\item MST
+\label{sec:org83d469b}
+A minimum spanning tree (MST) is a tree that:
+\begin{itemize}
+\item Is connected (Has all vertices connected)
+\item Is acyclic
+\item Includes all vertices
+\end{itemize}
+
+The greedy logic behind calculating the tree revolves around making cuts. The general logic states:
+Given any two sets of unconnected vertices ("cut" sets), the minimum edge that connects them is in the MST.
+
+To formalize this we have two different algorithms: Kruskall's and Prims
+
+Kruskall's algorithm works as follows:
+\begin{itemize}
+\item Continually add the minimum weight edge if it makes no cycles in the MST.
+\end{itemize}
+This is difficult to do as determining if a cut makes a cycle is difficult.
+
+Prim's (Lazy Approach)
+\begin{itemize}
+\item Use a minimum PQ that stores every edge weight that connects a vertice W (not in the MST) to the MST.
+\item Remove the minimum edge from the PQ and add that to the MST (if it is still a valid edge to add).
+\item Update the PQ with new edges that are available that fit the desired conditions above.
+\end{itemize}
+The problem with this is that our PQ is not efficient. We store tons of edges that eventually become invalid.
+
+Prim's (Eager approach)
+\begin{itemize}
+\item Use a minimum PQ that stores only one edge weight for every vertice W (not in the MST) that can be connected to the MST.
+\item Remove the minimum edgr from the PQ and add that to the MST.
+\item Update the PQ with new edges that are available that add new possible vertices to connect to, lower the weight to add any given vertices, etc.
+\end{itemize}
+More efficient with our memory, but a bit harder to keep track of.
+
+\item Shortest Path
+\label{sec:orgdef6bfc}
+This section will be refined later. For now, here's the two algorithms I know for shortest path problems:
+
+Djikstra:
+\begin{itemize}
+\item Consider vertices in increasing order of distance from the origin point.
+\item Relax edges as you go.
+\end{itemize}
+Works well if there's no cycles and no negatives.
+
+Bellman-Ford:
+\begin{itemize}
+\item Initialize distance to origin as 0 and infinite for every other vertice.
+\item Go through the list of vertices V-1 times and relax every distance possible.
+\end{itemize}
+
+More to be added later.
+\end{itemize}
+\section*{Algorithms}
+\label{sec:orgf5debf9}
+
+\subsection*{Searching}
+\label{sec:org98eab77}
+\subsubsection*{Binary Search}
+\label{sec:org9b5879a}
+TODO
+\subsection*{Sorting}
+\label{sec:orgb3bdf9f}
+\subsubsection*{Selection Sort}
+\label{sec:org1e5d698}
+Selection sort works by:
+\begin{itemize}
+\item Iterate through the list with a counter c
+\item Find the minimum value in any index >= c
+\item Swap the minimum value with the value at c
+\item Increase c
+\end{itemize}
+
+The time complexity is as follows:
+\begin{center}
+\begin{tabular}{lll}
+Worst Case & Average Case & Best Case\\
+\hline
+O(N\textsuperscript{2}) & O(N\textsuperscript{2}) & O(N\textsuperscript{2})\\
+\end{tabular}
+\end{center}
+
+\subsubsection*{Insertion Sort}
+\label{sec:org630150e}
+Insertion sort works by:
+\begin{itemize}
+\item Iterate through the list with counter c
+\item Swap the element at c with the item to it's left until it is in it's sorted position
+\item Increase c.
+\end{itemize}
+
+The time complexity is as follows:
+\begin{center}
+\begin{tabular}{lll}
+Worst Case & Average Case & Best Case\\
+\hline
+O(N\textsuperscript{2}) & O(N\textsuperscript{2}) & O(N)\\
+\end{tabular}
+\end{center}
+
+\subsubsection*{Shell Sort}
+\label{sec:org491df6f}
+TODO
+\subsubsection*{Merge Sort}
+\label{sec:orgfc61507}
+This sorting algorithm works by:
+\begin{itemize}
+\item Splitting the array in half recursively until it can no longer be split
+\item Building up an array out of the split pieces in sorted order.
+\end{itemize}
+
+The time complexity is as follows:
+\begin{center}
+\begin{tabular}{lll}
+Worst Case & Average Case & Best Case\\
+\hline
+O(NLogN) & O(NLogN) & O(NLogN)\\
+\end{tabular}
+\end{center}
+\subsubsection*{Quick Sort}
+\label{sec:org59f08ca}
+This sorting algorithm works by:
+\begin{itemize}
+\item Picking a pivot point
+\item Rearanging the list such that the pivot is placed in it's sorted position
+\begin{itemize}
+\item Meaning everything to the left is < the pivot, everything to the right is > the pivot.
+\end{itemize}
+\item Recursing on the left and right sub-arrays
+\end{itemize}
+
+The time complexity is as follows:
+\begin{center}
+\begin{tabular}{lll}
+Worst Case & Average Case & Best Case\\
+\hline
+O(N\textsuperscript{2}) & O(NLogN) & O(NLogN)\\
+\end{tabular}
+\end{center}
+
+Some improvements:
+\begin{itemize}
+\item 3-way Partitioning improves quick sort with duplicate values.
+\item Applying insertion sort on smaller sub-arrays can also work well.
+\end{itemize}
+
+\subsubsection*{Heap Sort}
+\label{sec:org3f49981}
+Heap sort works on a heapified array by:
+\begin{itemize}
+\item Remove the maximum value by swapping it with the last leaf node, removing the value, and swimming the new root down.
+\end{itemize}
+
+The relevant time complexities are as follows:
+\begin{center}
+\begin{tabular}{lll}
+Worst Case & Average Case & Best Case\\
+\hline
+O(LogN) & O(LogN) & O(LogN)\\
+\end{tabular}
+\end{center}
+\subsubsection*{Topological Sort}
+\label{sec:org9193058}
+Used on Directed Acyclic Graphs.
+Good for dependency problems.
+Topological sort returns a sorted list by:
+\begin{itemize}
+\item Run DFS on all vertices (using some way to track which vertices are visited)
+\item Return reverse order of visited points.
+\end{itemize}
+
+Multiple possible topological sort results can be valid.
+
+
+\subsection*{Union Find Problem}
+\label{sec:org8e18f55}
+The union find problem begs the question of how nodes are connected within a graph like strucutre.
+There are three primary operations that are of interest when it comes to algorithms that solve this problem:
+\begin{itemize}
+\item Are two nodes connected?
+\item What connected component is a node in?
+\item How do we connect two nodes?
+\end{itemize}
+
+\subsubsection*{Quick-Find}
+\label{sec:orga2ee200}
+Given an array (id) of N objects we chose to state that the value at id[x] is the id of the component that node x is in.
+
+The time complexity for the three main actions are as follows:
+\begin{center}
+\begin{tabular}{ll}
+Action & Time Complexity\\
+\hline
+Connected? & O(1)\\
+Find? & O(1)\\
+Union? & O(N)\\
+\end{tabular}
+\end{center}
+\subsubsection*{Quick-Union}
+\label{sec:orgb50ecc8}
+Given an array (id) of N elements. We state that id[x] is the parent of node x (almost like building a little tree).
+
+The time complexity for the three main actions are as follows:
+\begin{center}
+\begin{tabular}{ll}
+Action & Time Complexity\\
+\hline
+Connected? & O(N)\\
+Find? & O(N)\\
+Union? & O(N)\\
+\end{tabular}
+\end{center}
+
+Some improvements to this could be:
+\begin{itemize}
+\item Weighting
+\begin{itemize}
+\item Put smaller trees as children of larger trees.
+\item This garuntees a height of LogN thus making O(lgN) time complexity on all actions.
+\end{itemize}
+\item Path compression
+\begin{itemize}
+\item As one traverses the tree, move children up in the hierarchy to create shorter paths to traverse from the parent to the leaf node.
+\end{itemize}
+\end{itemize}
+
+
+\section*{Language Knowledge}
+\label{sec:org348267a}
+\end{document}
